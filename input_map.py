@@ -18,7 +18,7 @@ class GamepadApp:
         self.ctrl.init()
         log(
           "Mapping: LS=Mouse, RS=Scroll, A=LeftClick, B=RightClick, RB=MiddleClick, "
-          "X=Alt+F4, Y=F5, LB=Ctrl+Tab, LT=Alt+Tab, Start=ToggleControls, "
+          "X=DecreaseVolume, Y=IncreaseVolume, LB=Ctrl+Tab, LT=Alt+Tab, Start=ToggleControls, "
           "RT=SlowMouse, D-pad=ArrowKeys"
         )
         try:
@@ -78,7 +78,7 @@ class GamepadApp:
                     if up(cfg.BTN_BACK):
                         self.act.esc_up()
 
-                    # --- D-pad → Arrow keys (edge detection on hats) ---
+                    # --- D-p      ad → Arrow keys (edge detection on hats) ---
                     for (px, py), (cx, cy) in self.ctrl.read_hats():
                         # Horizontal arrows
                         if cx == -1 and px != -1:  # newly pressed LEFT
@@ -137,13 +137,13 @@ class GamepadApp:
                     if up(cfg.BTN_RB):
                         self.act.middle_up()
 
-                    # --- X = Alt+F4 (one-time) ---
+                    # --- X = decrease volume ---
                     if down(cfg.BTN_X):
-                        self.act.alt_f4_once()
+                        self.act.decrease_volume()
 
-                    # --- Y = F5 (one-time) ---
+                    # --- Y = increase volume ---
                     if down(cfg.BTN_Y):
-                        self.act.f5_once()
+                        self.act.increase_volume()
 
                 time.sleep(self.cfg.POLL_DELAY_MS / 1000.0)
 

@@ -137,3 +137,21 @@ class MouseKeyboardActions:
             log("Key PRESS F5")
         except Exception:
             pass
+
+    def increase_volume(self):
+        """Increase system volume (by one step)."""
+        try:
+            self.kb.press(Key.media_volume_up)
+            self.kb.release(Key.media_volume_up)
+            log("Key PRESS Volume Up")
+        except Exception:
+            pass
+    
+    def decrease_volume(self):
+        """Decrease system volume (by one step)."""
+        try:
+            self.kb.press(Key.media_volume_down)
+            self.kb.release(Key.media_volume_down)
+            log("Key PRESS Volume Down")
+        except Exception:
+            pass

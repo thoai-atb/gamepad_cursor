@@ -21,8 +21,8 @@ python3 -m gamepad_cursor.app
   - **B** → Right click (hold/release)
   - **RB** → Middle click (hold/release)
 - **Keyboard shortcuts**:
-  - **X** → Alt+F4 (close window)
-  - **Y** → F5 (refresh)
+  - **X** → Decrease volume
+  - **Y** → Increase volume
   - **LB** → Ctrl+Tab (switch tab once)
   - **LT** → Hold Alt+Tab (task switcher stays open while held)
   - **Start** → Enable/disable all controls
