@@ -10,7 +10,7 @@ class Config:
     PRECISION_FACTOR_TOGGLE: float = 0.33  # RS toggle multiplier
     RT_SLOW_MULT: float = 0.2           # new behavior: RT held => ~1/3 speed
     SCROLL_SPEED: int = 0.2              # vertical scroll units per tick (at full tilt)
-    HSCROLL_SPEED: int = 1             # horizontal scroll units per tick
+    HSCROLL_SPEED: int = 0.2             # horizontal scroll units per tick
     POLL_DELAY_MS: int = 8             # ~125 Hz
     INVERT_Y: bool = False             # normal Y (up = up)
     NEUTRAL_SAMPLES: int = 30          # right-stick neutral calibration samples

@@ -17,9 +17,20 @@ class GamepadApp:
     def run(self):
         self.ctrl.init()
         log(
-          "Mapping: LS=Mouse, RS=Scroll, A=LeftClick, B=RightClick, RB=MiddleClick, "
-          "X=DecreaseVolume, Y=IncreaseVolume, LB=Ctrl+Tab, LT=Alt+Tab, Start=ToggleControls, "
-          "RT=SlowMouse, D-pad=ArrowKeys"
+            "Mapping:\n"
+            "  LS = Mouse\n"
+            "  RS = Scroll\n"
+            "  A  = Left Click\n"
+            "  B  = Right Click\n"
+            "  X  = Middle Click\n"
+            "  LB = Decrease Volume\n"
+            "  RB = Increase Volume\n"
+            "  Y  = Ctrl+Tab\n"
+            "  LT = Alt+Tab\n"
+            "  Start = Toggle Controls\n"
+            "  RT = Slow Mouse\n"
+            "  D-pad = Arrow Keys\n"
+            "  Back = Esc"
         )
         try:
             while True:
@@ -40,6 +51,13 @@ class GamepadApp:
                 if down(cfg.BTN_START):
                     self.ctrl.enabled = not self.ctrl.enabled
                     log(f"Controls {'ENABLED' if self.ctrl.enabled else 'DISABLED'}")
+                    # --- Add rumble feedback ---
+                    js = self.ctrl.js
+                    if js and hasattr(js, "rumble"):
+                        try:
+                            js.rumble(0.7, 0.7, 200)  # strong/weak, duration ms
+                        except Exception as e:
+                            log(f"Rumble failed: {e}")
 
                 if self.ctrl.enabled:
                     # RS toggles persistent precision (stacks with RT slow when held)
@@ -60,17 +78,23 @@ class GamepadApp:
                     if up(cfg.BTN_B):
                         self.act.right_up()
 
-                    # Middle (X or RB)
-                    if down(cfg.BTN_X) or down(cfg.BTN_RB):
+                    # --- Middle mouse --
+                    if down(cfg.BTN_X):
                         self.act.middle_down()
-                    if up(cfg.BTN_X) or up(cfg.BTN_RB):
+                    if up(cfg.BTN_X):
                         self.act.middle_up()
 
-                    # Space (Y)
+                    # --- Decrease volume ---
+                    if down(cfg.BTN_LB):
+                        self.act.decrease_volume()
+
+                    # --- Increase volume ---
+                    if down(cfg.BTN_RB):
+                        self.act.increase_volume()
+
+                    # Ctrl+Tab (one time press)
                     if down(cfg.BTN_Y):
-                        self.act.space_down()
-                    if up(cfg.BTN_Y):
-                        self.act.space_up()
+                        self.act.ctrl_tab_once()
 
                     # Esc (Back)
                     if down(cfg.BTN_BACK):
@@ -114,7 +138,14 @@ class GamepadApp:
                     self.act.move(dx, dy, speed)
 
                     # --- Scroll (Right stick, always active; fractional accumulation in actions) ---
-                    self.act.scroll(sx * cfg.HSCROLL_SPEED, sy * cfg.SCROLL_SPEED)
+                    # RT held = slow scroll
+                    scroll_speed = cfg.SCROLL_SPEED
+                    hscroll_speed = cfg.HSCROLL_SPEED
+                    if rt >= cfg.TRIGGER_HELD_THRESH:
+                        scroll_speed *= cfg.PRECISION_FACTOR_TOGGLE  # or define a new factor if you want
+                        hscroll_speed *= cfg.PRECISION_FACTOR_TOGGLE
+
+                    self.act.scroll(sx * hscroll_speed, sy * scroll_speed)
 
                     # LT = hold Alt+Tab while trigger is down
                     lt_now = (lt >= self.cfg.TRIGGER_HELD_THRESH)
@@ -126,24 +157,6 @@ class GamepadApp:
                     elif not lt_now and self._lt_holding:
                         self._lt_holding = False
                         self.act.alt_tab_up()
-
-                    # LB = Ctrl+Tab (one time press)
-                    if down(cfg.BTN_LB):
-                        self.act.ctrl_tab_once()
-
-                    # --- Middle mouse (RB only now, since X is repurposed) ---
-                    if down(cfg.BTN_RB):
-                        self.act.middle_down()
-                    if up(cfg.BTN_RB):
-                        self.act.middle_up()
-
-                    # --- X = decrease volume ---
-                    if down(cfg.BTN_X):
-                        self.act.decrease_volume()
-
-                    # --- Y = increase volume ---
-                    if down(cfg.BTN_Y):
-                        self.act.increase_volume()
 
                 time.sleep(self.cfg.POLL_DELAY_MS / 1000.0)
 

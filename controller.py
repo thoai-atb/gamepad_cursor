@@ -80,7 +80,7 @@ class GamepadController:
         def apply_deadzone(val, dz=0.15):
             return 0.0 if abs(val) < dz else val
 
-        hscroll = 0
+        hscroll = apply_deadzone(ry, cfg.DEADZONE_SCROLL)
         vscroll = apply_deadzone(rx, cfg.DEADZONE_SCROLL)
 
         if cfg.INVERT_Y:
