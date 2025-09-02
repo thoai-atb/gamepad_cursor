@@ -22,10 +22,10 @@ class GamepadApp:
             "  RS = Scroll\n"
             "  A  = Left Click\n"
             "  B  = Right Click\n"
-            "  X  = Middle Click\n"
+            "  Y  = Middle Click\n"
+            "  X  = Space\n"
             "  LB = Decrease Volume\n"
             "  RB = Increase Volume\n"
-            "  Y  = Ctrl+Tab\n"
             "  LT = Alt+Tab\n"
             "  Start = Toggle Controls\n"
             "  RT = Slow Mouse\n"
@@ -51,20 +51,16 @@ class GamepadApp:
                 if down(cfg.BTN_START):
                     self.ctrl.enabled = not self.ctrl.enabled
                     log(f"Controls {'ENABLED' if self.ctrl.enabled else 'DISABLED'}")
-                    # --- Add rumble feedback ---
-                    js = self.ctrl.js
-                    if js and hasattr(js, "rumble"):
-                        try:
-                            js.rumble(0.7, 0.7, 200)  # strong/weak, duration ms
-                        except Exception as e:
-                            log(f"Rumble failed: {e}")
+                    if self.ctrl.enabled:
+                        # --- Add rumble feedback when enabled ---
+                        js = self.ctrl.js
+                        if js and hasattr(js, "rumble"):
+                            try:
+                                js.rumble(0.7, 0.7, 200)  # strong/weak, duration ms
+                            except Exception as e:
+                                log(f"Rumble failed: {e}")
 
                 if self.ctrl.enabled:
-                    # RS toggles persistent precision (stacks with RT slow when held)
-                    if down(cfg.BTN_RS):
-                        self.ctrl.precision_toggle = not self.ctrl.precision_toggle
-                        log(f"Precision mode: {'ON' if self.ctrl.precision_toggle else 'OFF'} (toggle)")
-
                     # --- Mouse buttons ---
                     # Left (A)
                     if down(cfg.BTN_A):
@@ -79,9 +75,9 @@ class GamepadApp:
                         self.act.right_up()
 
                     # --- Middle mouse --
-                    if down(cfg.BTN_X):
+                    if down(cfg.BTN_Y):
                         self.act.middle_down()
-                    if up(cfg.BTN_X):
+                    if up(cfg.BTN_Y):
                         self.act.middle_up()
 
                     # --- Decrease volume ---
@@ -92,9 +88,11 @@ class GamepadApp:
                     if down(cfg.BTN_RB):
                         self.act.increase_volume()
 
-                    # Ctrl+Tab (one time press)
-                    if down(cfg.BTN_Y):
-                        self.act.ctrl_tab_once()
+                    # SPACE
+                    if down(cfg.BTN_X):
+                        self.act.space_down()
+                    if up(cfg.BTN_X):
+                        self.act.space_up()
 
                     # Esc (Back)
                     if down(cfg.BTN_BACK):
@@ -129,9 +127,6 @@ class GamepadApp:
                     # RT held = slow mouse
                     if rt >= cfg.TRIGGER_HELD_THRESH:
                         speed *= cfg.RT_SLOW_MULT
-                    # Optional: persistent precision toggle (RS) also slows
-                    if self.ctrl.precision_toggle:
-                        speed *= cfg.PRECISION_FACTOR_TOGGLE
 
                     dx = int(mx * speed)
                     dy = int(my * speed)

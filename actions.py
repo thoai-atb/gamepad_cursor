@@ -49,9 +49,8 @@ class MouseKeyboardActions:
     def scroll(self, h: float, v: float):
         self._h_acc += h
         self._v_acc += v
-
-        ticks_h = int(self._h_acc) if self._h_acc >= 0 else int(self._h_acc)
-        ticks_v = int(self._v_acc) if self._v_acc >= 0 else int(self._v_acc)
+        ticks_h = round(self._h_acc)
+        ticks_v = round(self._v_acc)
 
         if ticks_h != 0 or ticks_v != 0:
             self.mouse.scroll(ticks_h, -ticks_v)  # flip v for OS direction
