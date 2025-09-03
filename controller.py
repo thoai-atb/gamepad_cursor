@@ -17,7 +17,6 @@ class GamepadController:
         self.neutral_ry = 0.0
         self.samples = []
         self.enabled = True
-        self.precision_toggle = False  # RS toggle
 
     def init(self):
         pygame.init()

@@ -17,20 +17,22 @@ class GamepadApp:
     def run(self):
         self.ctrl.init()
         log(
-            "Mapping:\n"
-            "  LS = Mouse\n"
-            "  RS = Scroll\n"
-            "  A  = Left Click\n"
-            "  B  = Right Click\n"
-            "  Y  = Middle Click\n"
-            "  X  = Space\n"
-            "  LB = Decrease Volume\n"
-            "  RB = Increase Volume\n"
-            "  LT = Alt+Tab\n"
-            "  Start = Toggle Controls\n"
-            "  RT = Slow Mouse\n"
-            "  D-pad = Arrow Keys\n"
-            "  Back = Esc"
+            "Control Mapping:\n"
+            "  LS      - Mouse Move\n"
+            "  RS      - Scroll\n"
+            "  A       - Left Click\n"
+            "  B       - Right Click\n"
+            "  Y       - Middle Click\n"
+            "  X       - Space\n"
+            "  LB      - Decrease Volume\n"
+            "  RB      - Increase Volume\n"
+            "  LS Btn  - Ctrl+Tab\n"
+            "  RS Btn  - Alt+Tab\n"
+            "  LT      - (unused)\n"
+            "  RT      - Slow Mouse/Scroll\n"
+            "  Start   - Toggle Controls\n"
+            "  D-pad   - Arrow Keys\n"
+            "  Back    - Esc"
         )
         try:
             while True:
@@ -142,17 +144,18 @@ class GamepadApp:
 
                     self.act.scroll(sx * hscroll_speed, sy * scroll_speed)
 
-                    # LT = hold Alt+Tab while trigger is down
-                    lt_now = (lt >= self.cfg.TRIGGER_HELD_THRESH)
-
-                    if lt_now and not self._lt_holding:
-                        self._lt_holding = True
+                    # --- Alt+Tab (Right Trigger) ---
+                    # RS = Alt+Tab
+                    if down(cfg.BTN_RS):
                         self.act.alt_tab_down()
-
-                    elif not lt_now and self._lt_holding:
-                        self._lt_holding = False
+                    if up(cfg.BTN_RS):
                         self.act.alt_tab_up()
 
+                    # --- Ctrl+Tab (Left Trigger) ---
+                    if down(cfg.BTN_LS):
+                        self.act.ctrl_tab_down()
+                    if up(cfg.BTN_LS):
+                        self.act.ctrl_tab_up()
                 time.sleep(self.cfg.POLL_DELAY_MS / 1000.0)
 
         except KeyboardInterrupt:

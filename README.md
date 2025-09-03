@@ -21,11 +21,15 @@ python3 -m gamepad_cursor.app
   - **B** → Right click (hold/release)
   - **Y** → Middle click (hold/release)
 - **Keyboard shortcuts**:
-  - **X** → Space
+  - **X** → Space (hold/release)
   - **LB** → Decrease volume
   - **RB** → Increase volume
-  - **LT** → Hold Alt+Tab (task switcher stays open while held)
+  - **LS Button** → Ctrl+Tab (hold/release)
+  - **RS Button** → Alt+Tab (hold/release)
+  - **LT** → (unused)
   - **Back** → Esc (hold/release)
 - **Precision toggle**:
   - **RT** → Slow mouse while held (stacks with RS toggle)
-- **D-Pad** → Arrow
+  - **RS Button** → Alt+Tab (hold/release)
+- **D-Pad** → Arrow keys (hold/release)
+- **Start** → Toggle controls (with rumble feedback if supported)

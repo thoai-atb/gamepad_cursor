@@ -104,16 +104,21 @@ class MouseKeyboardActions:
         except Exception:
             pass
 
-    def ctrl_tab_once(self):
-        """Send a single Ctrl+Tab press (quick tap)."""
+    def ctrl_tab_down(self):
+        """Hold Ctrl and Tab down together."""
         try:
             self.kb.press(Key.ctrl)
-            time.sleep(0.012)
             self.kb.press(Key.tab)
-            time.sleep(0.012)
+            log("Keys DOWN <Ctrl+Tab>")
+        except Exception:
+            pass
+
+    def ctrl_tab_up(self):
+        """Release Ctrl and Tab together."""
+        try:
             self.kb.release(Key.tab)
             self.kb.release(Key.ctrl)
-            log("Key COMBO Ctrl+Tab")
+            log("Keys UP <Ctrl+Tab>")
         except Exception:
             pass
 
