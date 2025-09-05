@@ -60,19 +60,19 @@ class MouseKeyboardActions:
     # --- Keyboard keys ---
     def space_down(self):
         self.kb.press(Key.space)
-        log("Key DOWN <space>")
+        log("Key DOWN SPACE")
 
     def space_up(self):
         self.kb.release(Key.space)
-        log("Key UP <space>")
+        log("Key UP SPACE")
 
     def esc_down(self):
         self.kb.press(Key.esc)
-        log("Key DOWN <esc>")
+        log("Key DOWN ESC")
 
     def esc_up(self):
         self.kb.release(Key.esc)
-        log("Key UP <esc>")
+        log("Key UP ESC")
 
     def arrow_left(self, down: bool):
         (self.kb.press if down else self.kb.release)(Key.left)
@@ -91,7 +91,7 @@ class MouseKeyboardActions:
         try:
             self.kb.press(Key.alt)
             self.kb.press(Key.tab)
-            log("Keys DOWN <Alt+Tab>")
+            log("Keys DOWN ALT+TAB")
         except Exception:
             pass
 
@@ -100,7 +100,7 @@ class MouseKeyboardActions:
         try:
             self.kb.release(Key.tab)
             self.kb.release(Key.alt)
-            log("Keys UP <Alt+Tab>")
+            log("Keys UP ALT+TAB")
         except Exception:
             pass
 
@@ -109,7 +109,7 @@ class MouseKeyboardActions:
         try:
             self.kb.press(Key.ctrl)
             self.kb.press(Key.tab)
-            log("Keys DOWN <Ctrl+Tab>")
+            log("Keys DOWN CTRL+TAB")
         except Exception:
             pass
 
@@ -118,22 +118,22 @@ class MouseKeyboardActions:
         try:
             self.kb.release(Key.tab)
             self.kb.release(Key.ctrl)
-            log("Keys UP <Ctrl+Tab>")
+            log("Keys UP CTRL+TAB")
         except Exception:
             pass
 
-    def alt_f4_once(self):
+    def alt_f4(self):
         """Send Alt+F4 (close window)."""
         try:
             self.kb.press(Key.alt)
             self.kb.press(Key.f4)
             self.kb.release(Key.f4)
             self.kb.release(Key.alt)
-            log("Key COMBO Alt+F4")
+            log("Key PRESS ALT+F4")
         except Exception:
             pass
 
-    def f5_once(self):
+    def f5(self):
         """Send F5 (refresh)."""
         try:
             self.kb.press(Key.f5)
@@ -157,5 +157,21 @@ class MouseKeyboardActions:
             self.kb.press(Key.media_volume_down)
             self.kb.release(Key.media_volume_down)
             log("Key PRESS Volume Down")
+        except Exception:
+            pass
+
+    def tab(self):
+        try:
+            self.kb.press(Key.tab)
+            self.kb.release(Key.tab)
+            log("Key PRESS TAB")
+        except Exception:
+            pass
+
+    def enter(self):
+        try:
+            self.kb.press(Key.enter)
+            self.kb.release(Key.enter)
+            log("Key PRESS ENTER")
         except Exception:
             pass
