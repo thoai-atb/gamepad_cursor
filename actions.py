@@ -175,3 +175,25 @@ class MouseKeyboardActions:
             log("Key PRESS ENTER")
         except Exception:
             pass
+
+    def zoom_in(self):
+        """Send Ctrl and = together (zoom in)."""
+        try:
+            self.kb.press(Key.ctrl)
+            self.kb.press('=')
+            self.kb.release('=')
+            self.kb.release(Key.ctrl)
+            log("Key PRESS CTRL+=")
+        except Exception:
+            pass
+
+    def zoom_out(self):
+        """Send Ctrl and - together (zoom out)."""
+        try:
+            self.kb.press(Key.ctrl)
+            self.kb.press('-')
+            self.kb.release('-')
+            self.kb.release(Key.ctrl)
+            log("Key PRESS CTRL+-")
+        except Exception:
+            pass

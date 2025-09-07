@@ -1,4 +1,5 @@
 import time
+import threading
 from .config import Config
 from .util import log
 from .actions import MouseKeyboardActions
@@ -33,6 +34,8 @@ class GamepadApp:
             "      B           → Alt+F4\n"
             "      X           → Tab\n"
             "      Y           → F5\n"
+            "      LB          → Ctrl + - (Zoom Out)\n"
+            "      RB          → Ctrl + = (Zoom In)\n"
             "      Start       → Toggle Controls On/Off\n"
             "  RT (Hold)       → Slow Mouse/Scroll\n"
             "  D-pad           → Arrow Keys\n"
@@ -62,13 +65,10 @@ class GamepadApp:
                     self.ctrl.enabled = not self.ctrl.enabled
                     log(f"Controls {'ENABLED' if self.ctrl.enabled else 'DISABLED'}")
                     if self.ctrl.enabled:
-                        # --- Add rumble feedback when enabled ---
-                        js = self.ctrl.js
-                        if js and hasattr(js, "rumble"):
-                            try:
-                                js.rumble(0.7, 0.7, 200)  # strong/weak, duration ms
-                            except Exception as e:
-                                log(f"Rumble failed: {e}")
+                        self.ctrl.rumble_feedback(ms=200)
+                        threading.Timer(0.3, lambda: self.ctrl.rumble_feedback(ms=200)).start()
+                    else:
+                        self.ctrl.rumble_feedback(ms=200)
 
                 # If control enabled, process inputs
                 if self.ctrl.enabled:
@@ -162,6 +162,12 @@ class GamepadApp:
         # Y -> F5
         if down(cfg.BTN_Y):
             self.act.f5()
+        # LB -> Ctrl + =
+        if down(cfg.BTN_LB):
+            self.act.zoom_out()
+        # RB -> Ctrl + -
+        if down(cfg.BTN_RB):
+            self.act.zoom_in()
 
     def check_dpad(self):
         # --- D-pad → Arrow keys (edge detection on hats) ---

@@ -120,3 +120,12 @@ class GamepadController:
             changed.append(((px,py),(cx,cy)))
         self.prev_hats = curr
         return changed
+
+    def rumble_feedback(self, ms=200):
+        # --- Add rumble feedback when enabled ---
+        js = self.js
+        if js and hasattr(js, "rumble"):
+            try:
+                js.rumble(0.7, 0.7, ms)  # strong/weak, duration ms
+            except Exception as e:
+                log(f"Rumble failed: {e}")
